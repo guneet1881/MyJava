@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Bare-Bones Local Web Server</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Server is Running! 🚀</h1>
+            <p class="subtitle">Powered by Core Java Sockets</p>
+        </header>
+        
+        <main>
+            <section class="card">
+                <h2>How it Works</h2>
+                <p>
+                    This page is being served directly from your hard drive by a custom Java application using <code>ServerSocket</code> and <code>Socket</code>. 
+                    It parses the raw HTTP HTTP GET requests and responds with the requested files along with standard HTTP response headers.
+                </p>
+                <div class="code-block">
+                    <code>
+                        GET /index.html HTTP/1.1<br>
+                        Host: localhost:8080<br>
+                        Accept: text/html<br>
+                    </code>
+                </div>
+            </section>
+            
+            <section class="features card">
+                <h2>Features</h2>
+                <ul>
+                    <li>No external frameworks or libraries.</li>
+                    <li>Multithreaded request handling using <code>ExecutorService</code>.</li>
+                    <li>Basic MIME type detection for HTML, CSS, JS, Images.</li>
+                    <li>Directory traversal protection (security feature).</li>
+                </ul>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Built with ❤️ using pure Core Java.</p>
+        </footer>
+    </div>
+</body>
+</html>
