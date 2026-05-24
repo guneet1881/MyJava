@@ -2,6 +2,49 @@
 
 A fully functional, multithreaded web server built from scratch using pure Java (`ServerSocket` and `Socket`). This project intentionally bypasses modern web frameworks like Spring Boot to demonstrate a raw understanding of networking, HTTP protocols, and core Java concepts.
 
+## Architecture Overview
+
+Here is a high-level overview of how the web server handles concurrent incoming requests using an `ExecutorService` thread pool.
+
+```mermaid
+graph TD
+    Client((Client/Browser)) -- HTTP Request --> WebServer[WebServer<br/>ServerSocket]
+    WebServer -- Accepts Connection --> ThreadPool[ExecutorService<br/>Thread Pool]
+    ThreadPool -- Assigns Socket --> ClientHandler[ClientHandler<br/>Runnable]
+    ClientHandler -- Parses Request --> MimeTypeDetector[MimeTypeDetector]
+    ClientHandler -- Reads File --> FileSystem[(Local File System<br/>./www)]
+    FileSystem -- Returns Data --> ClientHandler
+    ClientHandler -- HTTP Response --> Client
+```
+
+## Request Lifecycle
+
+The sequence below illustrates the lifecycle and internal logic of a single HTTP GET request.
+
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant Server as Web Server (ClientHandler)
+    participant FileSystem as File System
+    
+    Browser->>Server: HTTP GET /index.html
+    Server->>Server: Parse HTTP Request
+    Server->>Server: Security: Check Directory Traversal
+    
+    alt Path is Secure
+        Server->>FileSystem: Check if file exists in ./www
+        alt File Exists
+            FileSystem-->>Server: Return File Content
+            Server->>Server: Detect MIME type
+            Server-->>Browser: HTTP 200 OK + Content
+        else File Not Found
+            Server-->>Browser: HTTP 404 Not Found
+        end
+    else Path is Insecure
+        Server-->>Browser: HTTP 403 Forbidden
+    end
+```
+
 ## Features
 
 - **Core Java Networking**: Uses pure `java.net.ServerSocket` and `java.net.Socket`.
